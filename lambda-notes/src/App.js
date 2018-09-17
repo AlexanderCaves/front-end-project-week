@@ -26,6 +26,7 @@ class App extends Component {
     axios.get(url)
       .then(response => {
         console.log(response);
+        this.setState({ notes: response.data });
       })
   }
 
