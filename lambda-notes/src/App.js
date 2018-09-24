@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import axios from 'axios';
 
 import EditView from './components/EditView';
 import DeleteModal from './components/DeleteModal';
@@ -14,9 +15,6 @@ import './components/ListView.css';
 import './components/DeleteModal.css';
 import './components/CreateEditView.css';
 
-
-const url = 'https://killer-notes.herokuapp.com'
-
 class App extends Component {
   constructor() {
     super();
@@ -26,12 +24,35 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get(url)
+    axios.get('https://killer-notes.herokuapp.com/note/get/all')
       .then(response => {
         console.log(response);
         this.setState({ notes: response.data });
       })
   }
+
+  setNotesData = data => this.setState({ notes: data });
+
+  addNewNote = event => {
+    event.preventDefault();
+    // add code to create the smurf using the api
+    const { title, textBody } = this.state;
+    const newNote = { title, textBody };
+
+    axios.post(`https://killer-notes.herokuapp.com/note/create`, newNote)
+      .then(response => {
+        this.props.setNotesData(response.data);
+      })
+
+    this.setState({
+      title: '',
+      textBody: '',
+    });
+  }
+
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   render() {
     return (

@@ -45,5 +45,10 @@
     font-size: 20px;
     font-weight: bold;
     text-decoration: none;
+    word-wrap: break-word;
+}
+
+.note-content {
+    word-wrap: break-word;
 }
 
