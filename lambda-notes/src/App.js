@@ -35,7 +35,6 @@ class App extends Component {
 
   addNewNote = event => {
     event.preventDefault();
-    // add code to create the smurf using the api
     const { title, textBody } = this.state;
     const newNote = { title, textBody };
 
@@ -53,6 +52,25 @@ class App extends Component {
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  deleteNote = event => {
+    axios.delete('https://killer-notes.herokuapp.com/note/delete/id')
+      .then(response => {
+        this.setNotesData(response.data)
+      })
+      .catch(err => console.log(err));
+  }
+
+  editNote = event => {
+    axios.put('https://killer-notes.herokuapp.com/note/edit/id')
+      .then(response => {
+        this.setNotesData(response.data)
+      })
+    this.setState({
+      title: '',
+      textBody: '',
+    });
+  }
 
   render() {
     return (
