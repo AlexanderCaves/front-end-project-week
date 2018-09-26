@@ -54,6 +54,7 @@ class App extends Component {
   };
 
   deleteNote = event => {
+    event.preventDefault();
     axios.delete('https://killer-notes.herokuapp.com/note/delete/id')
       .then(response => {
         this.setNotesData(response.data)
@@ -62,6 +63,7 @@ class App extends Component {
   }
 
   editNote = event => {
+    event.preventDefault();
     axios.put('https://killer-notes.herokuapp.com/note/edit/id')
       .then(response => {
         this.setNotesData(response.data)
