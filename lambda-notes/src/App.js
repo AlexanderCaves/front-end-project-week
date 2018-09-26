@@ -41,7 +41,7 @@ class App extends Component {
 
     axios.post(`https://killer-notes.herokuapp.com/note/create`, newNote)
       .then(response => {
-        this.props.setNotesData(response.data);
+        this.setNotesData(response.data);
       })
 
     this.setState({
