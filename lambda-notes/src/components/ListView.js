@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ListView = (props) => {
+    
+    console.log('props', props);
     return(
         <div className='list-view'>
             <header className='list-header-container'>

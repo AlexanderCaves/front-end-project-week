@@ -24,54 +24,60 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://killer-notes.herokuapp.com/note/get/all')
+    axios.get('http://localhost:9000/')
       .then(response => {
         console.log(response);
         this.setState({ notes: response.data });
       })
+      .catch(err => console.log(err));
   }
 
   setNotesData = data => this.setState({ notes: data });
 
-  addNewNote = event => {
+  addNewNote = (event, push) => {
     event.preventDefault();
     const { title, textBody } = this.state;
     const newNote = { title, textBody };
 
-    axios.post(`https://killer-notes.herokuapp.com/note/create`, newNote)
+    axios.post(`http://localhost:9000/create`, newNote)
       .then(response => {
-        this.setNotesData(response.data);
+        this.setNotesData([ ...this.state.notes, response.data]);
       })
 
     this.setState({
       title: '',
       textBody: '',
     });
+    push('/')
   }
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInputChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  deleteNote = event => {
+  deleteNote = (event, _id, redirectTo) => {
     event.preventDefault();
-    axios.delete('https://killer-notes.herokuapp.com/note/delete/id')
+    axios.delete(`http://localhost:9000/notes/${_id}/delete`)
       .then(response => {
-        this.setNotesData(response.data)
+        redirectTo('/');
+        this.setNotesData(this.state.notes.filter(n => n._id != _id));
       })
       .catch(err => console.log(err));
   }
 
-  editNote = event => {
+  editNote = (event, _id, push) => {
     event.preventDefault();
-    axios.put('https://killer-notes.herokuapp.com/note/edit/id')
+    const { title, textBody } = this.state;
+    const note = { title, textBody };
+    axios.put(`http://localhost:9000/edit/${_id}`, note)
       .then(response => {
-        this.setNotesData(response.data)
+        this.setNotesData([ ...this.state.notes.filter(n => n._id != _id), response.data]);
       })
     this.setState({
       title: '',
       textBody: '',
     });
+    push('/')
   }
 
   render() {

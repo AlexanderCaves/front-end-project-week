@@ -1,6 +1,13 @@
 import React from 'react';
 
 const EditView = (props) => {
+    if (!props.notes) {
+        return (
+            <div>Loading</div>
+        );
+    }
+
+    console.log('props:', props);
 
     const note = props.notes.find(note =>
         note._id == props.match.params._id)
